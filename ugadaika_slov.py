@@ -2,8 +2,8 @@
 
 from random import *
 
-word_list = ['гармонь', 'игра', 'баллерина', 'вилка', 'шар', 'телефон', 'стол', 'ель', 'тряпка', 'фото', 'пазл', 'мракобесие', 'крем']
-
+word_list = ['гармонь', 'игра', 'баллерина', 'вилка', 'шар', 'телефон', 'стол', 'ель', 'тряпка', 'фото', 'пазл', 'мракобесие', 'крем', 'небо',
+             'кружка', 'ручка', 'самолёт', 'орхидея', 'папка', 'провод', 'картина', 'календарь', 'ножницы', 'шкаф']
 def get_word(): # функция выбора слова
     word = choice(word_list)
     word = word.upper()
@@ -11,7 +11,7 @@ def get_word(): # функция выбора слова
 
 def display_hangman(tries):
     stages = [ '''
-             The END
+             The END. Вы проиграли...
             --------
             |       |
             |       0
@@ -70,7 +70,7 @@ def display_hangman(tries):
                    -
                ''',
                '''
-               начальное состояние
+               Старт!
                    --------
                    |      |
                    |      
@@ -82,8 +82,32 @@ def display_hangman(tries):
     return stages[tries]
 
 #def play():   # функция процесса игры
-print(get_word())
-tries = 6
+
+tries = 6  # присваиваем начальное значение виселицы
 print('Давайте играть в угадайку слов!')
-print(display_hangman(tries))
+word = get_word()
+w = len(word) * '_'  # создаем строку загаданного слова
+w = list(w)  # переводим строку загаданного слова в список
+print(''.join(w))  # вывод длины загаданного слова
+print(display_hangman(tries)) # Вывод начальной виселицы
+
+while tries > 0:
+    print("Введите букву или слово")
+    litera = input().upper()
+    if litera in word and len(litera) == 1: # провверка наличия введенной БУКВЫ в слове
+        for i in range(len(word)):
+            if word[i] == litera:
+                w[i] = litera
+                print(''.join(w))
+                print(display_hangman(tries))
+    elif litera == word:  # проверка введенного СЛОВА
+        print("Ура! Вы победили!")
+        break
+    else:  # действия в случае если ни буква, ни слово не угаданы
+        tries -= 1
+        print(''.join(w))
+        print("Упс! Ошибочка..")
+        print(display_hangman(tries))
+print("Попробовать играть снова?")
+
 
