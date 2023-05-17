@@ -83,31 +83,47 @@ def display_hangman(tries):
 
 #def play():   # функция процесса игры
 print('Давайте играть в угадайку слов!')
-while True:
+while True: # внешний цикл, что бы игра повторялась (при желани)
     tries = 6  # присваиваем начальное значение виселицы
     word = get_word()
-    w = len(word) * '_'  # создаем строку загаданного слова
-    w = list(w)  # переводим строку загаданного слова в список
-    print(''.join(w))  # вывод длины загаданного слова
+    w_str = len(word) * '_'  # создаем строку загаданного слова
+    w_spis = list(w_str)  # переводим строку загаданного слова в список
+    print(''.join(w_spis))  # вывод длины загаданного слова
     print(display_hangman(tries)) # Вывод начальной виселицы
+    litters = []
 
     while tries > 0:
         print("Введите букву или слово")
-        litera = input().upper()
-        if litera in word and len(litera) == 1: # провверка наличия введенной БУКВЫ в слове
+        littera = input().upper()
+        litters.append(littera)
+        flag = True
+        if littera in word and len(littera) == 1: # провверка наличия введенной БУКВЫ в слове
             for i in range(len(word)):
-                if word[i] == litera:
-                    w[i] = litera
-                    print(''.join(w))
+                if word[i] == littera:
+                    w_spis[i] = littera
+                    a = ''.join(w_spis)
+                    if a == word: # проверка на случай того, что введеная буква помогла угдать все слово
+                        flag = False
+                        break
+                    print(a)
                     print(display_hangman(tries))
-        elif litera == word:  # проверка введенного СЛОВА
+                    print("Вы вводили следующие буквы и слова:")
+                    print(', '.join(litters))
+            if flag == False:
+                print("Ура! Вы победили!")
+                print(a)
+                break
+        elif littera == word or flag == False:  # проверка введенного СЛОВА
             print("Ура! Вы победили!")
+            print(a)
             break
         else:  # действия в случае если ни буква, ни слово не угаданы
             tries -= 1
-            print(''.join(w))
+            print(''.join(w_spis))
             print("Упс! Ошибочка..")
             print(display_hangman(tries))
+            print("Вы вводили следующие буквы и слова:")
+            print(', '.join(litters))
     print("Если хотите играть снова введите +")
     new_game = input()
     if new_game == "+":
